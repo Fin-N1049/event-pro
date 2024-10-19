@@ -8,6 +8,7 @@ import FoodOpinionPage from './screens/merchant/HomePage';
 import ReviewPage from './screens/merchant/Review';
 import logo from './logo.svg';
 import './App.css';
+import TeamListing from './screens/team_listing/team_listing.jsx';
 
 // Set the base URL for Axios
 axios.defaults.baseURL = process.env.AXIOS_URL || 'http://localhost:5000';
