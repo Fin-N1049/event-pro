@@ -1,24 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import FoodOpinionPage from './screen/merchant/HomePage';
+import ReviewPage from './screen/merchant/Review';
+import axios from 'axios';
+
+
+
+axios.defaults.baseURL = process.env.AXIOS_URL || 'http://localhost:5000';
+axios.defaults.withCredentials = true;
 
 function App() {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<FoodOpinionPage />} />
+        <Route path="/reviews/:name" element={<ReviewPage />} />
+      </Routes>
+    </Router>
   );
 }
 
