@@ -1,21 +1,26 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import FoodOpinionPage from './screen/merchant/HomePage';
-import ReviewPage from './screen/merchant/Review';
 import axios from 'axios';
 
+import HomePage from './screens/HomePage/homepage';
+import CreateEventPage from './screens/createEvent/createEvent';
+import FoodOpinionPage from './screens/merchant/HomePage';
+import ReviewPage from './screens/merchant/Review';
+import logo from './logo.svg';
+import './App.css';
 
-
+// Set the base URL for Axios
 axios.defaults.baseURL = process.env.AXIOS_URL || 'http://localhost:5000';
 axios.defaults.withCredentials = true;
 
 function App() {
-
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<FoodOpinionPage />} />
-        <Route path="/reviews/:name" element={<ReviewPage />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/eventcreate" element={<CreateEventPage />} />
+        <Route path="/opinion" element={<FoodOpinionPage />} />
+        <Route path="/reviews" element={<ReviewPage />} />
       </Routes>
     </Router>
   );
