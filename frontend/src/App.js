@@ -22,6 +22,7 @@ function App() {
         <Route path="/eventcreate" element={<CreateEventPage />} />
         <Route path="/opinion" element={<FoodOpinionPage />} />
         <Route path="/reviews" element={<ReviewPage />} />
+        <Route path="/team" element={<TeamListing />} />
       </Routes>
     </Router>
   );

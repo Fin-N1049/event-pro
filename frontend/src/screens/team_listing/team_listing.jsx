@@ -1,16 +1,6 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
 
-// Assuming `TeamDetail` is the component your friend created for displaying team details
-const TeamDetail = () => {
-  return (
-    <div>
-      <h2>Team Details Page</h2>
-      <p>This is where the detailed information for the selected team will be displayed.</p>
-    </div>
-  );
-};
-
+// Static team data
 const teams = [
   { name: 'Food', captain: 'Alice Johnson', totalMembers: 10 },
   { name: 'Decoration', captain: 'Bob Smith', totalMembers: 8 },
@@ -20,13 +10,12 @@ const teams = [
   { name: 'Entertainment', captain: 'Frank Miller', totalMembers: 9 },
 ];
 
+// Team Card Component
 const TeamCard = ({ team, showCheckbox, isChecked, onCheckboxChange }) => {
-  const navigate = useNavigate();
-
   const handleCardClick = (e) => {
-    // Prevent navigation if the checkbox was clicked
+    // Prevent checkbox clicks from triggering the card click event
     if (e.target.type !== 'checkbox') {
-      navigate(`/team/${team.name}`);
+      alert(`Team: ${team.name}, Captain: ${team.captain}`);
     }
   };
 
@@ -53,6 +42,7 @@ const TeamCard = ({ team, showCheckbox, isChecked, onCheckboxChange }) => {
   );
 };
 
+// Team Listing Component
 const TeamListing = () => {
   const [showCheckboxes, setShowCheckboxes] = useState(false);
   const [selectedTeams, setSelectedTeams] = useState([]);
@@ -98,6 +88,7 @@ const TeamListing = () => {
         {/* Today's Date */}
         <div className="text-gray-700">{today}</div>
       </header>
+
       {/* Combined Event Information Box with Alert and Cancel Button */}
       <div className="mt-4 shadow-md border border-gray-300 rounded-md p-4 flex justify-between items-center">
         <div>
@@ -159,13 +150,4 @@ const TeamListing = () => {
   );
 };
 
-const App = () => (
-  <Router>
-    <Routes>
-      <Route path="/" element={<TeamListing />} />
-      <Route path="/team/:teamName" element={<TeamDetail />} />
-    </Routes>
-  </Router>
-);
-
-export default App;
+export default TeamListing;
