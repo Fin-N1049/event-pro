@@ -64,7 +64,7 @@ const EventManagementApp = () => {
               </Link>
             </li>
             <li>
-              <Link to="/marketplace" className="flex items-center space-x-2">
+              <Link to="/opinion" className="flex items-center space-x-2">
                 <Package className="h-5 w-5" />
                 <span>Marketplace</span>
               </Link>
