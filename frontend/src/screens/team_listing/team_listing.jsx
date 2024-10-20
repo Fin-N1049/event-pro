@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 // Team Card Component
 const TeamCard = ({ team, showCheckbox, isChecked, onCheckboxChange }) => {
+  const navigate = useNavigate();
+  const {id} = useParams();
   const handleCardClick = (e) => {
     if (e.target.type !== 'checkbox') {
-      alert(`Team: ${team.team_name}, Captain: ${team.captain_name}`);
+      // alert(`Team: ${team.team_name}, Captain: ${team.captain_name}`);
+      navigate(`/team/${id}/chat`)
     }
   };
 
