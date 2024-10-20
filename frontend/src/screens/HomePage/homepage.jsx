@@ -44,7 +44,7 @@ const EventManagementApp = () => {
         
         {/* App Name in Center */}
         <div className="flex-1 text-center">
-          <h1 className="font-bold text-xl text-blue-600">EventMaster</h1>
+          <h1 className="font-bold text-xl text-blue-600">OrganEase</h1>
         </div>
 
         {/* Date on Right */}
