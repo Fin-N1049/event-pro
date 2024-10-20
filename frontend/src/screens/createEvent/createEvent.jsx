@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import { Calendar, Plus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-const CreateEventPage = ({ onCreateEvent }) => {
+const CreateEventPage = () => {
   const [eventName, setEventName] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [teams, setTeams] = useState([{ name: '', captainEmail: '' }]);
+  const [teams, setTeams] = useState([{ name: '', captainName: '', captainEmail: '' }]);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const addTeam = () => {
-    setTeams([...teams, { name: '', captainEmail: '' }]);
+    setTeams([...teams, { name: '', captainName: '', captainEmail: '' }]);
   };
 
   const updateTeam = (index, field, value) => {
@@ -19,11 +22,29 @@ const CreateEventPage = ({ onCreateEvent }) => {
     setTeams(updatedTeams);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const newEvent = { eventName, startDate, endDate, teams };
-    onCreateEvent(newEvent); // Call parent function to handle the new event
-    navigate('/'); // Navigate to the home page after creating the event
+    const coordinatorName = 'finson'; // Set the coordinator name
+    const newEvent = { eventName, coordinatorName, startDate, endDate, teams };
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await axios.post('/api/createevent', newEvent);
+
+      // Save the JWT token to local storage
+      if (response.data.token) {
+        localStorage.setItem('jwtToken', response.data.token);
+      }
+
+      // Navigate to the team details page with the event ID
+      navigate(`/team/${response.data.event_id}`); // Update to navigate with event ID
+    } catch (err) {
+      setError('Failed to create event. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleCancel = () => {
@@ -33,6 +54,8 @@ const CreateEventPage = ({ onCreateEvent }) => {
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <h2 className="text-2xl font-bold text-blue-600 mb-6">Create New Event</h2>
+      {error && <p className="text-red-500">{error}</p>} {/* Display error message */}
+
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="eventName">
@@ -97,6 +120,13 @@ const CreateEventPage = ({ onCreateEvent }) => {
                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               />
               <input
+                type="text"
+                placeholder={`Team ${index + 1} Captain Name`}
+                value={team.captainName}
+                onChange={(e) => updateTeam(index, 'captainName', e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              />
+              <input
                 type="email"
                 placeholder={`Team ${index + 1} Captain Email`}
                 value={team.captainEmail}
@@ -107,7 +137,7 @@ const CreateEventPage = ({ onCreateEvent }) => {
           ))}
           <button
             type="button"
-            onClick={addTeam} // Call addTeam when button is clicked
+            onClick={addTeam}
             className="mt-2 flex items-center text-blue-600 hover:text-blue-700"
           >
             <Plus className="h-4 w-4 mr-1" />
@@ -118,14 +148,15 @@ const CreateEventPage = ({ onCreateEvent }) => {
         <div className="flex space-x-4">
           <button
             type="submit"
-            className="flex-1 bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-md flex items-center justify-center"
+            className={`flex-1 bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-md flex items-center justify-center ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+            disabled={loading}
           >
             <Plus className="mr-2 h-5 w-5" />
-            Create Event
+            {loading ? 'Creating...' : 'Create Event'}
           </button>
           <button
             type="button"
-            onClick={handleCancel} // Correctly call handleCancel
+            onClick={handleCancel}
             className="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 p-2 rounded-md flex items-center justify-center"
           >
             Cancel
